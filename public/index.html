@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DragonOS — Every Employee. Every Tool. One Platform.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #0c0c14;
+  --ink2: #13131f;
+  --ink3: #1a1a2e;
+  --surface: #16162a;
+  --surface2: #1e1e38;
+  --border: rgba(255,255,255,0.07);
+  --border2: rgba(255,255,255,0.12);
+  --text: #f0f0fa;
+  --text2: #a0a0c8;
+  --text3: #60607a;
+  --violet: #7c5cfc;
+  --violet-light: #a78bfa;
+  --violet-glow: rgba(124,92,252,0.15);
+  --emerald: #10d9a0;
+  --emerald-dim: rgba(16,217,160,0.12);
+  --amber: #f5a623;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;font-size:16px}
+body{background:var(--ink);color:var(--text);font-family:'Outfit',sans-serif;font-weight:400;line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+body::after{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:9999;opacity:.5}
+.mesh{position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(ellipse 80% 50% at 20% 20%,rgba(124,92,252,.07) 0%,transparent 60%),radial-gradient(ellipse 60% 40% at 80% 80%,rgba(16,217,160,.05) 0%,transparent 60%),radial-gradient(ellipse 40% 60% at 60% 10%,rgba(245,166,35,.03) 0%,transparent 50%)}
+.grid{position:fixed;inset:0;z-index:0;pointer-events:none;background-image:linear-gradient(rgba(255,255,255,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.02) 1px,transparent 1px);background-size:80px 80px;mask-image:radial-gradient(ellipse at center,black 0%,transparent 80%)}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 3rem;background:rgba(12,12,20,.85);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-bottom:1px solid var(--border)}
+.logo{display:flex;align-items:center;gap:.6rem;text-decoration:none;font-family:'Outfit',sans-serif;font-weight:700;font-size:1.15rem;letter-spacing:-.02em;color:var(--text)}
+.logo-mark{width:30px;height:30px;background:linear-gradient(135deg,var(--violet),var(--emerald));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.85rem;flex-shrink:0}
+.logo span{color:var(--violet-light)}
+.nav-center{display:flex;align-items:center;gap:.25rem}
+.nav-center a{padding:.5rem 1rem;color:var(--text2);text-decoration:none;font-size:.875rem;font-weight:400;border-radius:6px;transition:color .2s,background .2s}
+.nav-center a:hover{color:var(--text);background:rgba(255,255,255,.05)}
+.nav-right{display:flex;align-items:center;gap:.75rem}
+.btn-ghost{padding:.5rem 1.25rem;color:var(--text2);background:transparent;border:1px solid var(--border2);border-radius:8px;font-family:'Outfit',sans-serif;font-size:.875rem;font-weight:500;cursor:pointer;text-decoration:none;transition:all .2s}
+.btn-ghost:hover{color:var(--text);border-color:rgba(255,255,255,.2);background:rgba(255,255,255,.04)}
+.btn-cta{padding:.5rem 1.25rem;background:var(--violet);color:#fff;border:none;border-radius:8px;font-family:'Outfit',sans-serif;font-size:.875rem;font-weight:600;cursor:pointer;text-decoration:none;transition:all .2s;letter-spacing:.01em}
+.btn-cta:hover{background:#8b6dfc;transform:translateY(-1px);box-shadow:0 6px 20px rgba(124,92,252,.35)}
+.hamburger{display:none;flex-direction:column;gap:4px;cursor:pointer;background:none;border:none;padding:6px}
+.hamburger span{display:block;width:20px;height:1.5px;background:var(--text2);border-radius:2px;transition:all .3s}
+
+/* MOBILE */
+.mobile-menu{display:none;position:fixed;inset:0;z-index:190;background:rgba(12,12,20,.97);backdrop-filter:blur(20px);flex-direction:column;align-items:center;justify-content:center;gap:1.5rem}
+.mobile-menu.open{display:flex}
+.mobile-menu a{font-family:'Outfit',sans-serif;font-size:1.75rem;font-weight:600;color:var(--text);text-decoration:none;letter-spacing:-.02em;transition:color .2s}
+.mobile-menu a:hover{color:var(--violet-light)}
+.mobile-close{position:absolute;top:1.25rem;right:1.75rem;background:none;border:none;color:var(--text2);font-size:1.25rem;cursor:pointer}
+
+/* HERO */
+.hero{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:9rem 2rem 5rem;text-align:center}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:.6rem;background:var(--violet-glow);border:1px solid rgba(124,92,252,.25);border-radius:100px;padding:.35rem 1rem .35rem .6rem;font-size:.75rem;font-weight:500;color:var(--violet-light);letter-spacing:.05em;margin-bottom:2.5rem;animation:riseIn .7s ease both}
+.eyebrow-dot{width:20px;height:20px;background:linear-gradient(135deg,var(--violet),var(--emerald));border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.65rem;flex-shrink:0}
+.hero-headline{font-family:'Instrument Serif',serif;font-size:clamp(3rem,7.5vw,6.5rem);font-weight:400;line-height:1.02;letter-spacing:-.02em;margin-bottom:1.75rem;max-width:900px;animation:riseIn .7s ease .1s both}
+.hero-headline em{font-style:italic;background:linear-gradient(135deg,var(--violet-light) 0%,var(--emerald) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-sub{font-size:clamp(1rem,2vw,1.125rem);color:var(--text2);max-width:500px;line-height:1.75;margin-bottom:2.5rem;font-weight:300;animation:riseIn .7s ease .2s both}
+.hero-actions{display:flex;gap:.75rem;flex-wrap:wrap;justify-content:center;animation:riseIn .7s ease .3s both}
+.hero-cta{padding:.875rem 2rem;background:var(--violet);color:#fff;border:none;border-radius:10px;font-family:'Outfit',sans-serif;font-size:.95rem;font-weight:600;cursor:pointer;text-decoration:none;transition:all .25s;letter-spacing:.01em}
+.hero-cta:hover{background:#8b6dfc;transform:translateY(-2px);box-shadow:0 12px 32px rgba(124,92,252,.4)}
+.hero-ghost{padding:.875rem 2rem;background:transparent;color:var(--text2);border:1px solid var(--border2);border-radius:10px;font-family:'Outfit',sans-serif;font-size:.95rem;font-weight:500;cursor:pointer;text-decoration:none;transition:all .25s}
+.hero-ghost:hover{color:var(--text);border-color:rgba(255,255,255,.2);background:rgba(255,255,255,.04)}
+
+/* METRICS */
+.metrics{position:relative;z-index:1;display:flex;justify-content:center;flex-wrap:wrap;border-top:1px solid var(--border);border-bottom:1px solid var(--border);animation:riseIn .7s ease .4s both}
+.metric{padding:2.5rem 3.5rem;text-align:center;border-right:1px solid var(--border);flex:1;min-width:160px}
+.metric:last-child{border-right:none}
+.metric-value{font-family:'Instrument Serif',serif;font-size:2.5rem;line-height:1;color:var(--text);display:block;margin-bottom:.4rem}
+.metric-label{font-size:.72rem;color:var(--text3);font-weight:500;letter-spacing:.08em;text-transform:uppercase}
+
+/* SECTIONS */
+.section{position:relative;z-index:1;padding:7rem 2rem}
+.section-inner{max-width:1120px;margin:0 auto}
+.eyebrow-tag{display:inline-flex;align-items:center;gap:.5rem;font-size:.72rem;font-weight:600;color:var(--emerald);letter-spacing:.12em;text-transform:uppercase;margin-bottom:1.25rem}
+.eyebrow-tag::before{content:'';display:block;width:16px;height:1px;background:var(--emerald)}
+.section-h{font-family:'Instrument Serif',serif;font-size:clamp(2rem,4.5vw,3.25rem);font-weight:400;line-height:1.1;letter-spacing:-.02em;margin-bottom:1.25rem;max-width:600px}
+.section-h em{font-style:italic;color:var(--violet-light)}
+.section-p{font-size:1rem;color:var(--text2);max-width:480px;line-height:1.75;font-weight:300}
+
+/* FEATURES */
+.features-layout{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:16px;overflow:hidden;margin-top:4rem}
+.feat{background:var(--ink2);padding:2rem 1.75rem;transition:background .25s}
+.feat:hover{background:var(--surface)}
+.feat-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;margin-bottom:1.25rem;background:var(--ink3);border:1px solid var(--border)}
+.feat-title{font-size:.95rem;font-weight:600;margin-bottom:.5rem;color:var(--text);letter-spacing:-.01em}
+.feat-desc{font-size:.82rem;color:var(--text3);line-height:1.65;font-weight:300}
+
+/* STEPS */
+.steps-section{background:var(--ink2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.steps-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;margin-top:4rem;border:1px solid var(--border);border-radius:16px;overflow:hidden;background:var(--border)}
+.step{background:var(--ink2);padding:2.5rem 2rem;transition:background .25s}
+.step:hover{background:var(--surface)}
+.step-num{font-family:'Instrument Serif',serif;font-size:3.5rem;color:rgba(124,92,252,.12);line-height:1;margin-bottom:1.5rem;display:block}
+.step-title{font-size:.95rem;font-weight:600;margin-bottom:.6rem;color:var(--text)}
+.step-desc{font-size:.82rem;color:var(--text3);line-height:1.65;font-weight:300}
+
+/* CASES */
+.cases-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;margin-top:4rem}
+.case-card{background:var(--ink2);border:1px solid var(--border);border-radius:14px;padding:2rem;transition:all .25s;position:relative;overflow:hidden}
+.case-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--violet),transparent);opacity:0;transition:opacity .3s}
+.case-card:hover{border-color:rgba(124,92,252,.3);transform:translateY(-3px);background:var(--surface)}
+.case-card:hover::before{opacity:1}
+.case-tag{font-size:.68rem;font-weight:600;color:var(--emerald);letter-spacing:.12em;text-transform:uppercase;margin-bottom:.875rem;display:block}
+.case-title{font-size:1rem;font-weight:600;letter-spacing:-.01em;margin-bottom:.625rem;color:var(--text)}
+.case-desc{font-size:.82rem;color:var(--text3);line-height:1.65;font-weight:300}
+
+/* TERMINAL */
+.demo-split{display:grid;grid-template-columns:5fr 7fr;gap:4rem;align-items:center}
+.terminal-wrap{background:#080810;border:1px solid var(--border);border-radius:14px;overflow:hidden;box-shadow:0 24px 64px rgba(0,0,0,.5),0 0 0 1px rgba(255,255,255,.04)}
+.t-bar{background:rgba(255,255,255,.03);padding:.875rem 1.25rem;display:flex;align-items:center;gap:.5rem;border-bottom:1px solid var(--border)}
+.t-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.t-dot-r{background:#ff5f57}.t-dot-y{background:#febc2e}.t-dot-g{background:#28c840}
+.t-title{font-size:.7rem;color:var(--text3);margin:0 auto;letter-spacing:.06em}
+.t-body{padding:1.5rem;font-family:'Outfit',monospace;font-size:.78rem;line-height:2}
+.t-prompt{color:#7c5cfc}.t-cmd{color:var(--text2)}.t-comment{color:var(--text3)}.t-green{color:var(--emerald)}.t-amber{color:var(--amber)}.t-white{color:var(--text)}
+.t-line{display:block}.t-blank{display:block;height:.5rem}
+.cursor{display:inline-block;width:7px;height:14px;background:var(--emerald);vertical-align:middle;margin-left:2px;animation:blink 1.2s step-end infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+.demo-points{list-style:none;margin:2rem 0;display:flex;flex-direction:column;gap:1rem}
+.demo-points li{display:flex;gap:.875rem;align-items:flex-start;font-size:.875rem;color:var(--text2);font-weight:300;line-height:1.5}
+.dp-icon{width:22px;height:22px;border-radius:6px;background:var(--violet-glow);border:1px solid rgba(124,92,252,.2);display:flex;align-items:center;justify-content:center;font-size:.65rem;flex-shrink:0;color:var(--violet-light);margin-top:.1rem}
+
+/* FORM */
+.form-section{background:var(--ink);border-top:1px solid var(--border)}
+.form-split{display:grid;grid-template-columns:5fr 7fr;gap:5rem;align-items:start}
+.form-left-perks{list-style:none;margin-top:2.5rem;display:flex;flex-direction:column;gap:.875rem}
+.form-left-perks li{display:flex;align-items:center;gap:.75rem;font-size:.875rem;color:var(--text2);font-weight:300}
+.perk-check{width:18px;height:18px;border-radius:50%;background:var(--emerald-dim);border:1px solid rgba(16,217,160,.2);display:flex;align-items:center;justify-content:center;font-size:.6rem;color:var(--emerald);flex-shrink:0}
+.form-card{background:var(--ink2);border:1px solid var(--border);border-radius:18px;padding:2.5rem}
+.form-card-title{font-family:'Instrument Serif',serif;font-size:1.5rem;font-weight:400;letter-spacing:-.02em;margin-bottom:.4rem;color:var(--text)}
+.form-card-sub{font-size:.82rem;color:var(--text3);margin-bottom:2rem;font-weight:300}
+.f-row{display:grid;grid-template-columns:1fr 1fr;gap:.875rem}
+.f-group{margin-bottom:.875rem}
+.f-group label{display:block;font-size:.72rem;font-weight:500;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:.4rem}
+.f-group input,.f-group select,.f-group textarea{width:100%;background:var(--ink);border:1px solid var(--border);border-radius:8px;padding:.75rem 1rem;color:var(--text);font-family:'Outfit',sans-serif;font-size:.875rem;font-weight:400;outline:none;transition:border-color .2s,box-shadow .2s;-webkit-appearance:none}
+.f-group input:focus,.f-group select:focus,.f-group textarea:focus{border-color:rgba(124,92,252,.5);box-shadow:0 0 0 3px rgba(124,92,252,.08)}
+.f-group input::placeholder,.f-group textarea::placeholder{color:var(--text3)}
+.f-group select option{background:var(--ink2)}
+.f-group textarea{resize:vertical;min-height:88px}
+.f-submit{width:100%;background:var(--violet);color:#fff;border:none;border-radius:10px;padding:.95rem;font-family:'Outfit',sans-serif;font-size:.95rem;font-weight:600;cursor:pointer;transition:all .25s;margin-top:.5rem;letter-spacing:.01em;display:flex;align-items:center;justify-content:center;gap:.5rem}
+.f-submit:hover{background:#8b6dfc;transform:translateY(-1px);box-shadow:0 8px 24px rgba(124,92,252,.35)}
+.f-submit:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none}
+.form-success{display:none;text-align:center;padding:3rem 2rem}
+.success-ring{width:72px;height:72px;border-radius:50%;background:var(--emerald-dim);border:1px solid rgba(16,217,160,.3);display:flex;align-items:center;justify-content:center;font-size:1.75rem;margin:0 auto 1.5rem}
+.form-success h3{font-family:'Instrument Serif',serif;font-size:1.5rem;font-weight:400;letter-spacing:-.02em;margin-bottom:.5rem}
+.form-success p{font-size:.875rem;color:var(--text3);line-height:1.6;font-weight:300}
+
+/* FOOTER */
+footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:2.5rem 3rem}
+.footer-inner{max-width:1120px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1.25rem}
+.footer-nav{display:flex;gap:1.75rem;list-style:none}
+.footer-nav a{font-size:.82rem;color:var(--text3);text-decoration:none;transition:color .2s}
+.footer-nav a:hover{color:var(--text2)}
+.footer-copy{font-size:.75rem;color:var(--text3)}
+
+/* RULE */
+.rule{position:relative;z-index:1;height:1px;background:var(--border)}
+
+/* ANIMATIONS */
+@keyframes riseIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .65s ease,transform .65s ease}
+.reveal.in{opacity:1;transform:translateY(0)}
+.reveal-d1{transition-delay:.1s}.reveal-d2{transition-delay:.2s}.reveal-d3{transition-delay:.3s}
+
+/* RESPONSIVE */
+@media(max-width:1024px){
+  .features-layout{grid-template-columns:1fr 1fr}
+  .steps-grid{grid-template-columns:1fr 1fr}
+  .cases-grid{grid-template-columns:1fr 1fr}
+  .demo-split{grid-template-columns:1fr;gap:3rem}
+  .form-split{grid-template-columns:1fr;gap:3rem}
+}
+@media(max-width:768px){
+  nav{padding:0 1.5rem}
+  .nav-center,.nav-right .btn-ghost{display:none}
+  .hamburger{display:flex}
+  .hero{padding:8rem 1.5rem 4rem}
+  .hero-headline{font-size:2.6rem}
+  .metrics{flex-wrap:wrap}
+  .metric{min-width:50%;border-right:none;border-bottom:1px solid var(--border);padding:2rem}
+  .metric:nth-child(odd){border-right:1px solid var(--border)}
+  .metric:last-child,.metric:nth-last-child(2):nth-child(odd){border-bottom:none}
+  .section{padding:4rem 1.5rem}
+  .features-layout{grid-template-columns:1fr}
+  .steps-grid{grid-template-columns:1fr;background:none;border:none;border-radius:0;gap:1px}
+  .step{border:1px solid var(--border);border-radius:12px}
+  .cases-grid{grid-template-columns:1fr}
+  .f-row{grid-template-columns:1fr}
+  footer{padding:2rem 1.5rem}
+  .footer-inner{flex-direction:column;gap:1rem}
+}
+@media(max-width:480px){
+  .hero-headline{font-size:2.1rem}
+  .hero-actions{flex-direction:column;align-items:stretch}
+  .hero-cta,.hero-ghost{text-align:center}
+  .form-card{padding:1.75rem 1.25rem}
+}
+</style>
+</head>
+<body>
+<div class="mesh"></div>
+<div class="grid"></div>
+
+<div class="mobile-menu" id="mobileMenu">
+  <button class="mobile-close" onclick="closeMobile()">✕</button>
+  <a href="#features" onclick="closeMobile()">Features</a>
+  <a href="#how-it-works" onclick="closeMobile()">How it works</a>
+  <a href="#use-cases" onclick="closeMobile()">Use cases</a>
+  <a href="#demo" class="btn-cta" onclick="closeMobile()" style="font-size:1.1rem;padding:.75rem 2rem">Book a Demo</a>
+</div>
+
+<nav>
+  <a href="#" class="logo">
+    <div class="logo-mark">🐉</div>
+    Dragon<span>OS</span>
+  </a>
+  <div class="nav-center">
+    <a href="#features">Features</a>
+    <a href="#how-it-works">How it works</a>
+    <a href="#use-cases">Use cases</a>
+  </div>
+  <div class="nav-right">
+    <a href="mailto:rikag1234@gmail.com" class="btn-ghost">Contact</a>
+    <a href="#demo" class="btn-cta">Book a Demo</a>
+  </div>
+  <button class="hamburger" onclick="openMobile()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<section class="hero">
+  <div class="hero-eyebrow">
+    <div class="eyebrow-dot">🐉</div>
+    Now in Beta &nbsp;·&nbsp; Built in Kolkata
+  </div>
+  <h1 class="hero-headline">
+    Every employee.<br>Every tool.<br><em>One platform.</em>
+  </h1>
+  <p class="hero-sub">
+    DragonOS is the AI operating system for your business. Give every team member their own intelligent assistant. Connect every tool. Automate every workflow.
+  </p>
+  <div class="hero-actions">
+    <a href="#demo" class="hero-cta">Book a Demo →</a>
+    <a href="#features" class="hero-ghost">Explore features</a>
+  </div>
+</section>
+
+<div class="metrics reveal">
+  <div class="metric"><span class="metric-value">10+</span><span class="metric-label">Built-in Skills</span></div>
+  <div class="metric"><span class="metric-value">∞</span><span class="metric-label">Tool Integrations</span></div>
+  <div class="metric"><span class="metric-value">24 / 7</span><span class="metric-label">Agents Running</span></div>
+  <div class="metric"><span class="metric-value">₹ 0</span><span class="metric-label">API Cost to You*</span></div>
+</div>
+
+<div class="rule"></div>
+
+<section class="section" id="features">
+  <div class="section-inner">
+    <div class="eyebrow-tag reveal">Platform</div>
+    <h2 class="section-h reveal">Not a chatbot.<br><em>A business operating system.</em></h2>
+    <p class="section-p reveal">Give every person in your organisation their own AI assistant — one that searches the web, connects your tools, runs code, and automates work autonomously.</p>
+    <div class="features-layout">
+      <div class="feat reveal"><div class="feat-icon">🤖</div><div class="feat-title">Personal AI for Every Role</div><div class="feat-desc">Each team member gets an assistant tuned to their job. Directors see everything. Employees work within their defined scope.</div></div>
+      <div class="feat reveal reveal-d1"><div class="feat-icon">🔗</div><div class="feat-title">Webhook Triggers</div><div class="feat-desc">New lead, form submission, or API event — agents wake up automatically, process it, and notify your team. Zero manual work.</div></div>
+      <div class="feat reveal reveal-d2"><div class="feat-icon">⏰</div><div class="feat-title">Scheduled Automations</div><div class="feat-desc">Daily reports. Weekly summaries. Monthly analysis. Configure once and results arrive on schedule, without intervention.</div></div>
+      <div class="feat reveal"><div class="feat-icon">🌐</div><div class="feat-title">Real-Time Web Intelligence</div><div class="feat-desc">Agents search the live web for current data, news, competitor pricing, and market trends — not cached training data.</div></div>
+      <div class="feat reveal reveal-d1"><div class="feat-icon">🔧</div><div class="feat-title">Connect Any Tool</div><div class="feat-desc">Salesforce, Zerodha, WhatsApp, Google Sheets, your own database — connect anything via our MCP server framework.</div></div>
+      <div class="feat reveal reveal-d2"><div class="feat-icon">✅</div><div class="feat-title">Approval Workflows</div><div class="feat-desc">Sensitive actions require director approval. Full audit trail. Nothing proceeds without the right authorisation.</div></div>
+      <div class="feat reveal"><div class="feat-icon">💻</div><div class="feat-title">Autonomous Code Execution</div><div class="feat-desc">Agents write Python and JavaScript, execute it, auto-fix errors, and return results — data processing without a developer.</div></div>
+      <div class="feat reveal reveal-d1"><div class="feat-icon">🔐</div><div class="feat-title">Bring Your Own Keys</div><div class="feat-desc">Use your existing OpenAI, Anthropic, or Gemini API keys. Your data stays yours. Your costs stay predictable.</div></div>
+      <div class="feat reveal reveal-d2"><div class="feat-icon">🧠</div><div class="feat-title">Cross-Session Memory</div><div class="feat-desc">Agents remember context, preferences, and decisions across every conversation. Institutional knowledge, automated.</div></div>
+    </div>
+  </div>
+</section>
+
+<div class="rule"></div>
+
+<section class="section steps-section" id="how-it-works">
+  <div class="section-inner">
+    <div class="eyebrow-tag reveal">Process</div>
+    <h2 class="section-h reveal">Operational in<br><em>under an hour.</em></h2>
+    <p class="section-p reveal">No developers required. No complex configuration. Connect your tools and start automating the same day.</p>
+    <div class="steps-grid">
+      <div class="step reveal"><span class="step-num">01</span><div class="step-title">Create your agents</div><div class="step-desc">Build AI agents for each role in your team. Define their purpose, their tools, and their access level.</div></div>
+      <div class="step reveal reveal-d1"><span class="step-num">02</span><div class="step-title">Connect your tools</div><div class="step-desc">Link your existing software — CRMs, databases, messaging platforms, financial APIs — using our connector framework.</div></div>
+      <div class="step reveal reveal-d2"><span class="step-num">03</span><div class="step-title">Configure automations</div><div class="step-desc">Set webhooks for event-driven triggers and schedules for recurring tasks. Define it once, it runs indefinitely.</div></div>
+      <div class="step reveal reveal-d3"><span class="step-num">04</span><div class="step-title">Your business runs itself</div><div class="step-desc">Leads qualify, reports generate, tasks complete — while your team focuses on decisions that require human judgment.</div></div>
+    </div>
+  </div>
+</section>
+
+<div class="rule"></div>
+
+<section class="section" id="use-cases">
+  <div class="section-inner">
+    <div class="eyebrow-tag reveal">Industries</div>
+    <h2 class="section-h reveal">Built for businesses<br>across every sector.</h2>
+    <p class="section-p reveal">From brokerage firms to trading desks, from logistics operations to healthcare practices — DragonOS adapts to your domain.</p>
+    <div class="cases-grid">
+      <div class="case-card reveal"><span class="case-tag">Real Estate</span><div class="case-title">Never miss a lead again</div><div class="case-desc">New enquiry arrives at 2am — agent qualifies it, scores intent, and delivers a prioritised briefing before you start your day.</div></div>
+      <div class="case-card reveal reveal-d1"><span class="case-tag">Finance & Accounting</span><div class="case-title">Automate compliance reporting</div><div class="case-desc">Agent pulls data, runs calculations, generates GST and MIS reports, flags anomalies — daily, without manual intervention.</div></div>
+      <div class="case-card reveal reveal-d2"><span class="case-tag">Stock Trading</span><div class="case-title">AI-powered portfolio intelligence</div><div class="case-desc">Connect Zerodha via Kite API. Agent monitors positions, alerts on targets, and generates daily P&L reports automatically.</div></div>
+      <div class="case-card reveal"><span class="case-tag">E-commerce</span><div class="case-title">Automate customer operations</div><div class="case-desc">New order triggers confirmations, inventory updates, delay alerts, and refund handling — end to end, without human input.</div></div>
+      <div class="case-card reveal reveal-d1"><span class="case-tag">Logistics</span><div class="case-title">Intelligent dispatch & tracking</div><div class="case-desc">Agents monitor shipments, update clients proactively, reroute on delays, and generate delivery performance reports.</div></div>
+      <div class="case-card reveal reveal-d2"><span class="case-tag">Legal & Compliance</span><div class="case-title">Document intelligence at scale</div><div class="case-desc">Agents review contracts, extract key clauses, flag risks, and summarise obligations — reducing review time dramatically.</div></div>
+    </div>
+  </div>
+</section>
+
+<div class="rule"></div>
+
+<section class="section" style="background:var(--ink2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
+  <div class="section-inner">
+    <div class="demo-split">
+      <div>
+        <div class="eyebrow-tag reveal">Live Demo</div>
+        <h2 class="section-h reveal">See it working<br><em>in real time.</em></h2>
+        <ul class="demo-points reveal">
+          <li><div class="dp-icon">→</div>A lead arrives at 11pm — agent qualifies it while you sleep</li>
+          <li><div class="dp-icon">→</div>Your morning briefing is ready before your first meeting</li>
+          <li><div class="dp-icon">→</div>Complex research delivered in seconds, not hours</li>
+          <li><div class="dp-icon">→</div>Your entire operation visible in a single dashboard</li>
+        </ul>
+        <a href="#demo" class="hero-cta reveal">Book your personalised demo →</a>
+      </div>
+      <div class="terminal-wrap reveal">
+        <div class="t-bar">
+          <div class="t-dot t-dot-r"></div><div class="t-dot t-dot-y"></div><div class="t-dot t-dot-g"></div>
+          <span class="t-title">DragonOS — Assistant</span>
+        </div>
+        <div class="t-body">
+          <span class="t-line"><span class="t-prompt">director@dragonos</span> <span class="t-cmd">~ $</span></span>
+          <span class="t-blank"></span>
+          <span class="t-line"><span class="t-comment">// 23:47 — Webhook received</span></span>
+          <span class="t-blank"></span>
+          <span class="t-line"><span class="t-green">✓ Lead qualified</span></span>
+          <span class="t-line"><span class="t-cmd">  Name    </span><span class="t-white">Rahul Sharma</span></span>
+          <span class="t-line"><span class="t-cmd">  Query   </span><span class="t-white">2BHK · Rajarhat</span></span>
+          <span class="t-line"><span class="t-cmd">  Budget  </span><span class="t-white">₹ 50 lakhs</span></span>
+          <span class="t-line"><span class="t-cmd">  Intent  </span><span class="t-amber">HIGH ★★★★☆</span></span>
+          <span class="t-blank"></span>
+          <span class="t-line"><span class="t-comment">// 09:00 — Scheduled briefing</span></span>
+          <span class="t-blank"></span>
+          <span class="t-line"><span class="t-green">✓ Morning report ready</span></span>
+          <span class="t-line"><span class="t-white">  3 new leads overnight</span></span>
+          <span class="t-line"><span class="t-white">  Top priority: Rahul Sharma</span></span>
+          <span class="t-line"><span class="t-white">  2 new launches in New Town</span></span>
+          <span class="t-blank"></span>
+          <span class="t-line"><span class="t-prompt">director@dragonos</span> <span class="t-cmd">~ $</span><span class="cursor"></span></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="rule"></div>
+
+<section class="section form-section" id="demo">
+  <div class="section-inner">
+    <div class="form-split">
+      <div>
+        <div class="eyebrow-tag reveal">Get Started</div>
+        <h2 class="section-h reveal">Book a free,<br><em>personalised demo.</em></h2>
+        <p class="section-p reveal">We'll set up a live demonstration using your actual business context — not a scripted walkthrough. See exactly how DragonOS would work for you.</p>
+        <ul class="form-left-perks reveal">
+          <li><div class="perk-check">✓</div>30-minute live demonstration</li>
+          <li><div class="perk-check">✓</div>Configured for your industry</li>
+          <li><div class="perk-check">✓</div>Free onboarding consultation</li>
+          <li><div class="perk-check">✓</div>No commitment required</li>
+          <li><div class="perk-check">✓</div>Response within 24 hours</li>
+        </ul>
+      </div>
+      <div class="reveal">
+        <div class="form-card" id="formCard">
+          <div class="form-card-title">Request a Demo</div>
+          <div class="form-card-sub">Fill in your details and we'll be in touch shortly.</div>
+          <form id="demoForm" onsubmit="submitForm(event)">
+            <div class="f-row">
+              <div class="f-group"><label>Full Name *</label><input type="text" id="fname" placeholder="Your name" required></div>
+              <div class="f-group"><label>Phone *</label><input type="tel" id="fphone" placeholder="+91 98300 00000" required></div>
+            </div>
+            <div class="f-group"><label>Work Email *</label><input type="email" id="femail" placeholder="you@company.com" required></div>
+            <div class="f-group"><label>Company Name *</label><input type="text" id="fcompany" placeholder="Your company" required></div>
+            <div class="f-group">
+              <label>Industry *</label>
+              <select id="fbusiness" required>
+                <option value="">Select your industry…</option>
+                <option>Real Estate</option>
+                <option>Finance / Accounting</option>
+                <option>Stock Trading</option>
+                <option>E-commerce</option>
+                <option>Logistics</option>
+                <option>Healthcare</option>
+                <option>Legal</option>
+                <option>Manufacturing</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div class="f-group"><label>What would you like to automate?</label><textarea id="fmessage" placeholder="Describe your current workflow or pain point…"></textarea></div>
+            <button type="submit" class="f-submit" id="fBtn"><span id="fBtnText">Request Demo →</span></button>
+          </form>
+        </div>
+        <div class="form-success" id="formSuccess">
+          <div class="success-ring">✓</div>
+          <h3>Request received.</h3>
+          <p>We'll reach out within 24 hours to schedule your personalised demonstration.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div class="logo"><div class="logo-mark">🐉</div>Dragon<span>OS</span></div>
+    <ul class="footer-nav">
+      <li><a href="#features">Features</a></li>
+      <li><a href="#use-cases">Use Cases</a></li>
+      <li><a href="#demo">Book Demo</a></li>
+      <li><a href="mailto:rikag1234@gmail.com">Contact</a></li>
+    </ul>
+    <div class="footer-copy">© 2025 DragonOS · dragonos.co.in</div>
+  </div>
+</footer>
+
+<script>
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('in'); });
+}, { threshold: 0.08 });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+function openMobile() { document.getElementById('mobileMenu').classList.add('open'); document.body.style.overflow='hidden'; }
+function closeMobile() { document.getElementById('mobileMenu').classList.remove('open'); document.body.style.overflow=''; }
+
+async function submitForm(e) {
+  e.preventDefault();
+  const btn = document.getElementById('fBtn');
+  const txt = document.getElementById('fBtnText');
+  txt.textContent = 'Sending…';
+  btn.disabled = true;
+  const data = {
+    name: document.getElementById('fname').value,
+    email: document.getElementById('femail').value,
+    phone: document.getElementById('fphone').value,
+    company: document.getElementById('fcompany').value,
+    business: document.getElementById('fbusiness').value,
+    message: document.getElementById('fmessage').value,
+    submittedAt: new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }),
+  };
+  try {
+    const res = await fetch('https://dragonos-sheet-api.vercel.app/api/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    });
+    if (res.ok) {
+      document.getElementById('formCard').style.display = 'none';
+      document.getElementById('formSuccess').style.display = 'block';
+    } else { throw new Error(); }
+  } catch {
+    txt.textContent = 'Request Demo →';
+    btn.disabled = false;
+    alert('Something went wrong. Please email us at rikag1234@gmail.com');
+  }
+}
+</script>
+</body>
+</html>
